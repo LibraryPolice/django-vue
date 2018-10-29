@@ -16,9 +16,6 @@
           </el-option>
         </el-select>
         </template>
-        <!--</el-table-column>-->
-          <!--<el-table-column prop="id" label="label" min-width="100">-->
-        <!--<template scope="scope"> {{scope.row[0]}} </template>-->
         </el-table-column>
          <el-table-column prop="id" label="输入想要检索的内容" min-width="100">
         <template scope="scope"> <el-input v-model="search_list[scope.row.index].input"> </el-input></template>
@@ -26,24 +23,7 @@
     </el-table>
         <el-col :span="12"><el-button @click="index_search()">查询 </el-button></el-col>
       <el-col :span="12"><el-button @click="add_search()">添加条件 </el-button></el-col>
-      <!--<el-table :data="search_list" border>-->
-        <!--<template scope="scope">-->
-          <!--{{scope.row}}-->
-       <!--<el-col :offset='2' :span="10"><el-input v-model="input"> </el-input></el-col>-->
-      <!--<el-col :span="6">-->
-      <!--<el-select  v-model="search_header" placeholder="请选择">-->
-          <!--<el-option-->
-            <!--v-for="item in index_header"-->
-            <!--:key="item[1]"-->
-            <!--:label="item[1]"-->
-            <!--:value="item[0]">-->
-          <!--</el-option>-->
-        <!--</el-select>-->
-        <!--</el-col>-->
-        <!--</template>-->
-      <!--</el-table>-->
-      <!--&lt;!&ndash;<el-col :span="3"><el-button @click="index_search()">查询 </el-button></el-col>&ndash;&gt;-->
-      <!--<el-col :span="3"><el-button @click="index_search()">添加条件 </el-button></el-col>-->
+
     </el-card>
       <el-card align="center">
          <el-table :data="booklist.slice((currentPage-1)*pagesize,currentPage*pagesize)" border>
@@ -121,6 +101,7 @@
 
 <script>
   import Vue from 'vue'
+  import global_ from 'Global.vue'
 export default {
   name: 'HelloWorld',
   data () {
@@ -144,7 +125,7 @@ export default {
     }
   },
   mounted(){
-     this.axios.get(' http://39.105.79.167/api/init_book', {
+     this.axios.get(global_.server+'/api/init_book', {
       })
     .then((res) => {
 
@@ -260,7 +241,6 @@ export default {
   },
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;
