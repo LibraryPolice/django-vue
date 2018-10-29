@@ -1,0 +1,24 @@
+*** Starting uWSGI 2.0.17.1 (64bit) on [Tue Oct 16 14:30:47 2018] ***
+compiled with version: 5.4.0 20160609 on 16 October 2018 05:06:56
+os: Linux-4.4.0-117-generic #141-Ubuntu SMP Tue Mar 13 11:58:07 UTC 2018
+nodename: iZ2ze6311wylr0un6s5q47Z
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/www
+writing pidfile to /home/www/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+group nobody not found.
+*** Starting uWSGI 2.0.17.1 (64bit) on [Tue Oct 16 14:31:13 2018] ***
+compiled with version: 5.4.0 20160609 on 16 October 2018 05:06:56
+os: Linux-4.4.0-117-generic #141-Ubuntu SMP Tue Mar 13 11:58:07 UTC 2018
+nodename: iZ2ze6311wylr0un6s5q47Z
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/www
+writing pidfile to /home/www/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+group nobody not found.
