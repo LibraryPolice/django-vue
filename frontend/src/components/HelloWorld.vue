@@ -2,8 +2,20 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-      <el-col :span="12">
-    <el-card >
+<el-row>
+      <el-col :offset='6' :span="12">
+      <el-input v-model="main_search"> </el-input>
+        </el-col>
+
+      <el-col :span="3">
+           <el-button @click="mix_search()">搜索</el-button>
+        </el-col>
+      <el-col :span="3">
+          <el-button type="info" plain @click=" max_search_selected()">高级搜索</el-button>
+        </el-col>
+</el-row>
+
+    <el-card v-show="max_search">
        <el-table :data="search_list" border>
         <el-table-column prop="id" label="选择需要检索的项" min-width="100">
         <template scope="scope">
@@ -23,13 +35,28 @@
     </el-table>
         <el-col :span="12"><el-button @click="index_search()">查询 </el-button></el-col>
       <el-col :span="12"><el-button @click="add_search()">添加条件 </el-button></el-col>
-
     </el-card>
-      <el-card align="center">
-         <el-table :data="booklist.slice((currentPage-1)*pagesize,currentPage*pagesize)" border>
-        <el-table-column prop="id" label="label" min-width="100">
-        <template scope="scope"> {{scope.row}} </template>
-        </el-table-column>
+
+
+      <el-card align="center" v-show="is_searched">
+        <el-table :data="booklist.slice((currentPage-1)*pagesize,currentPage*pagesize)" border>
+          <el-table-column prop="id" label="名字" show-overflow-tooltip min-width="100">
+          <template scope="scope">
+             <a :href="'https://wiki.52poke.com/wiki/'+scope.row[0]"
+            target="_blank"
+            class="buttonText">{{scope.row[0]}}</a>
+             </template>
+          </el-table-column>
+           <el-table-column prop="id" label="基本信息" show-overflow-tooltip min-width="100">
+          <template scope="scope"> {{scope.row[1]}} </template>
+          </el-table-column>
+           <el-table-column prop="id" label="出场信息" show-overflow-tooltip  min-width="100">
+          <template scope="scope"> {{scope.row[2]}} </template>
+          </el-table-column>
+            <el-table-column prop="id" label="关键属性" show-overflow-tooltip min-width="100">
+          <template scope="scope"> {{scope.row[3]}} </template>
+            </el-table-column>
+
 
     </el-table>
     <el-pagination
@@ -42,72 +69,75 @@
       :total=parseInt(booklist.length)>
     </el-pagination>
     </el-card>
-        </el-col>
+
+      <!--<el-col :span="12">-->
+
+    <!--<el-card :span="12">-->
+
+       <!--<el-upload-->
+          <!--enctype="multipart/form-data"-->
+          <!--class="upload-demo"-->
+          <!--accept=".csv"-->
+          <!--:action="UploadServer"-->
+          <!--:on-preview="handlePreview"-->
+          <!--:on-remove="handleRemove"-->
+          <!--:before-remove="beforeRemove"-->
+          <!--:on-success="handleSuccess"-->
+          <!--:limit="1"-->
+          <!--:on-exceed="handleExceed"-->
+          <!--:file-list="fileList"><el-button    size="small" type="primary">上传自己的csv文件并建立索引</el-button>-->
+          <!--</el-upload>-->
+      <!--<el-tag>默认使用神奇宝贝资料库.csv</el-tag>-->
+      <!--<el-row>-->
+          <!--<el-header>倒排索引表预览</el-header>-->
+          <!--<el-select @change=change_label v-model="chosen_header" placeholder="请选择">-->
+          <!--<el-option-->
+            <!--v-for="item in index_header"-->
+            <!--:key="item[1]"-->
+            <!--:label="item[1]"-->
+            <!--:value="item[0]">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
+        <!--</el-row>-->
+      <!--<el-table :data="indexlist.slice((currentPage2-1)*pagesize2,currentPage2*pagesize2)" border>-->
+        <!--<el-table-column prop="id" label="label" min-width="100">-->
+        <!--<template scope="scope"> {{scope.row[0]}} </template>-->
+        <!--</el-table-column>-->
 
 
-      <el-col :span="12">
+        <!--<el-table-column prop="id" label="index" min-width="100">-->
+        <!--<template scope="scope"> {{scope.row[1]}} </template>-->
+        <!--</el-table-column>-->
+      <!--</el-table>-->
+<!--<el-pagination-->
 
-    <el-card :span="12">
-
-       <el-upload
-          enctype="multipart/form-data"
-          class="upload-demo"
-          accept=".csv"
-          action="http://39.105.79.167/api/upload_file"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          :on-success="handleSuccess"
-          :limit="1"
-          :on-exceed="handleExceed"
-          :file-list="fileList"><el-button    size="small" type="primary">上传自己的csv文件并建立索引</el-button>
-          </el-upload>
-      <el-tag>默认使用神奇宝贝资料库.csv</el-tag>
-      <el-row>
-          <el-header>倒排索引表预览</el-header>
-          <el-select @change=change_label v-model="chosen_header" placeholder="请选择">
-          <el-option
-            v-for="item in index_header"
-            :key="item[1]"
-            :label="item[1]"
-            :value="item[0]">
-          </el-option>
-        </el-select>
-        </el-row>
-      <el-table :data="indexlist.slice((currentPage2-1)*pagesize2,currentPage2*pagesize2)" border>
-        <el-table-column prop="id" label="label" min-width="100">
-        <template scope="scope"> {{scope.row[0]}} </template>
-        </el-table-column>
-
-
-        <el-table-column prop="id" label="index" min-width="100">
-        <template scope="scope"> {{scope.row[1]}} </template>
-        </el-table-column>
-      </el-table>
-<el-pagination
-
-      @size-change="handleSizeChange2"
-      @current-change="handleCurrentChange2"
-      :current-page="currentPage2"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pagesize2"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total=parseInt(indexlist.length)>
-    </el-pagination>
-    </el-card>
-      </el-col>
+      <!--@size-change="handleSizeChange2"-->
+      <!--@current-change="handleCurrentChange2"-->
+      <!--:current-page="currentPage2"-->
+      <!--:page-sizes="[10, 20, 30, 40]"-->
+      <!--:page-size="pagesize2"-->
+      <!--layout="total, sizes, prev, pager, next, jumper"-->
+      <!--:total=parseInt(indexlist.length)>-->
+    <!--</el-pagination>-->
+    <!--</el-card>-->
+      <!--</el-col>-->
       </div>
 </template>
 
 <script>
   import Vue from 'vue'
-  import global_ from 'Global.vue'
+  // import global_ from 'Global'
 export default {
   name: 'HelloWorld',
   data () {
     return {
+      max_search: false,
+      is_searched :false,
+      main_search:'',
+      UploadServer:this.GLOBAL.server+"/api/upload_file",
       search_list:[{'index':0,'header':'','input':''
       }],
+      server:this.GLOBAL.server,
       search_int:0,
       search_header:'',
       chosen_header:'',
@@ -121,29 +151,18 @@ export default {
       big_indexlist:[],
       indexlist:[],
       input:"",
-      msg: 'Welcome to the Assignment-1'
+      msg: '精灵宝可梦搜索'
     }
   },
   mounted(){
-     this.axios.get(global_.server+'/api/init_book', {
+     this.axios.get(this.GLOBAL.server+'/api/init_book', {
       })
     .then((res) => {
 
         let data = res.data.data;
-        console.log(res.data.header)
         for(let index in res.data.header){
           this.index_header.push([index,res.data.header[index]])
         }
-        console.log(this.index_header)
-         for(let index in data){
-              let mid_index = []
-            for(let i in data[index]) {
-              if (i != "" && i != " " && i != null) {
-                mid_index.push([i, data[index][i]]);
-              }
-            }
-              this.big_indexlist.push(mid_index)
-          }
         this.chosen_header=res.data.header[0]
         this.indexlist=this.big_indexlist[0]
     })
@@ -209,7 +228,30 @@ export default {
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
+    mix_search(){
+      this.is_searched=true
+      this.axios.get(this.GLOBAL.server+'/api/show_books', {
+      params: {
+        "search_header": " ",
+        "search_input":this.main_search,
+        "search_mode":'0'
+      }})
+        .then((res) => {
+          this.currentPage=1
+            if(res.data.list.length != 0){
+
+                 this.booklist=res.data.list}
+}
+           )
+        .catch((res) => {
+        });
+    },
+    max_search_selected(){
+       this.max_search=!this.max_search
+      console.log(this.max_search)
+    },
     index_search(){
+      this.is_searched = true
       let search_header=''
       let search_input=''
        for(let i in this.search_list){
@@ -217,27 +259,21 @@ export default {
          search_input+=this.search_list[i]['input']+"?"
        }
       console.log(search_header)
-     this.axios.get(' http://39.105.79.167/api/show_books', {
+     this.axios.get(this.GLOBAL.server+'/api/show_books', {
 
       params: {
         "search_header": search_header,
-        "search_input":search_input
+        "search_input":search_input,
+        "search_mode":'1'
       }})
     .then((res) => {
-      this.currentPage=1,
-      this.booklist=[]
-      for (let  par_index in res.data.list){
-        let row=""
-        for(let row_index in res.data.list[par_index]){
-          row+=res.data.list[par_index][row_index]+"  "
-        }
-
-        this.booklist.push(row)
-      }
+          this.currentPage=1
+               if(res.data.list.length != 0){
+          this.booklist=res.data.list}
           })
-    .catch((res) => {
-    });
-    },
+        .catch((res) => {
+        });
+        },
   },
 }
 </script>

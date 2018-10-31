@@ -3,7 +3,7 @@
 </template>
 
 <script>
-   const server='http://39.105.79.167';
+   const server='http://localhost:8000';
   export default
   {
     server

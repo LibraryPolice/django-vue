@@ -5,6 +5,7 @@ from django.http import JsonResponse
 import json
 from django.core import serializers
 from .index import *
+#from .index import save_root
 # Create your views here.
 import os
 
@@ -21,11 +22,11 @@ def upload_file(request):
             response['msg'] = 'no file'
             return JsonResponse(response)
         else:
-            destination = open(os.path.join("/home/www/upload/", myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
+            destination = open(os.path.join(save_root, myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
             for chunk in myFile.chunks():  # 分块写入文件
                 destination.write(chunk)
             destination.close()
-            data, header= index_file("/home/www/upload/"+ myFile.name)
+            data, header = index_file(save_root+ myFile.name)
             response['data'] = data
             response['header'] = header
         return JsonResponse(response)
@@ -35,7 +36,7 @@ def upload_file(request):
 def init_book(request):
     response = {}
     try:
-        response['data'],response['header'] =index_init()
+        response['header'] =index_init()
         response['msg'] = 'success'
         response['error_num'] = 0
     except  Exception as e:
@@ -50,7 +51,8 @@ def show_books(request):
     response = {}
 
     try:
-        result = search(request.GET.get('search_input'),request.GET.get('search_header'))
+        result = search(request.GET.get('search_mode'), request.GET.get('search_input'), request.GET.get('search_header'))
+        result = list(result)
         response['list'] = result
         response['msg'] = 'success'
         response['error_num'] = 0

@@ -8,6 +8,10 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios,axios);
 Vue.config.productionTip = false
+
+import global_ from './components/Global'//引用文件
+Vue.prototype.GLOBAL = global_
+
 new Vue({
   el: '#app',
   components: { App },
