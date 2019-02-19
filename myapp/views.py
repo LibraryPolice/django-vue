@@ -4,7 +4,7 @@ from myapp.models import Book
 from django.http import JsonResponse
 import json
 from django.core import serializers
-from .index import *
+from .do_something import *
 #from .index import save_root
 # Create your views here.
 import os
@@ -46,18 +46,3 @@ def init_book(request):
     return JsonResponse(response)
 
 
-@require_http_methods(["GET"])
-def show_books(request):
-    response = {}
-
-    try:
-        result = search(request.GET.get('search_mode'), request.GET.get('search_input'), request.GET.get('search_header'))
-        result = list(result)
-        response['list'] = result
-        response['msg'] = 'success'
-        response['error_num'] = 0
-    except  Exception as e:
-        response['msg'] = str(e)
-        response['error_num'] = 1
-
-    return JsonResponse(response)
