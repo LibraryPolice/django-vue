@@ -1,6 +1,6 @@
 # -*-coding:utf-8 -*-
 from django.views.decorators.http import require_http_methods
-from myapp.models import Book
+# from myapp.models import Book
 from django.http import JsonResponse
 import json
 from django.core import serializers
